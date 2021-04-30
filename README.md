@@ -1,7 +1,4 @@
-[![Build Status](https://travis-ci.org/terikon/cordova-plugin-photo-library.svg?branch=master)](https://travis-ci.org/terikon/cordova-plugin-photo-library)
-
-Known issues:
-- This plugin does not work with WKWebView. Please do not use it if you planning to switch to WKWebView, until someone will resolve this issue.
+The project supports WKWebView.
 
 That's how it looks and performs in real app:
 
@@ -17,7 +14,8 @@ Displays photo library on cordova's HTML page, by URL. Gets thumbnail of arbitra
 
 - Displays photo gallery as web page, and not as boring native screen which you cannot modify. This brings back control over your app to you.
 For example, you can use [PhotoSwipe](https://github.com/dimsemenov/photoswipe) library to present photos.
-- Provides custom schema to access thumbnails: cdvphotolibrary://thumbnail?fileid=xxx&width=128&height=128&quality=0.5 .
+- Provides custom schema to access thumbnails: cdvphotolibrary://thumbnail?fileid=xxx&width=128&height=128&quality=0.5
+- Uses the scheme and host of WkWebView instead of cdvphotolibrary scheme on iOS
 - Works on Android, iOS and browser (cordova serve).
 - Fast - uses browser cache.
 - Can save photos (jpg, png, animated gifs) and videos to specified album on device.
@@ -27,7 +25,7 @@ For example, you can use [PhotoSwipe](https://github.com/dimsemenov/photoswipe) 
 
 **Co-maintainer needed**
 
-Currently Android code is pretty stable, iOS has few stability [issues](https://github.com/terikon/cordova-plugin-photo-library/issues).
+Currently Android code is pretty stable, iOS has few stability [issues](https://github.com/tien271/cordova-plugin-photo-library-wkwebview/issues).
 **Co-maintainer with iOS/Swift knowlege is needed, please [contact](https://github.com/viskin)**.
 
 Contributions are welcome.
@@ -36,7 +34,7 @@ Please write tests for your contribution.
 
 # Install
 
-    cordova plugin add cordova-plugin-photo-library --variable PHOTO_LIBRARY_USAGE_DESCRIPTION="To choose photos" --save
+    cordova plugin add cordova-plugin-photo-library-wkwebview --variable PHOTO_LIBRARY_USAGE_DESCRIPTION="To choose photos" --save
 
 # Usage
 
@@ -71,7 +69,7 @@ cordova.plugins.photoLibrary.getLibrary(
 
   },
   function (err) {
-    console.log('Error occured');
+    console.log('Error occurred');
   },
   { // optional options
     thumbnailWidth: 512,
@@ -97,6 +95,28 @@ cordova.plugins.photoLibrary.getAlbums(
   function (err) { }
 );
 ```
+
+## Getting photos from album
+```js
+cordova.plugins.photoLibrary.getPhotosFromAlbum(
+  "AlbumName",
+  function(photos) {
+    console.log(libraryItem.id);          // ID of the photo
+          console.log(libraryItem.photoURL);    // Cross-platform access to photo
+          console.log(libraryItem.thumbnailURL);// Cross-platform access to thumbnail
+          console.log(libraryItem.fileName);
+          console.log(libraryItem.width);
+          console.log(libraryItem.height);
+          console.log(libraryItem.creationDate);
+          console.log(libraryItem.latitude);
+          console.log(libraryItem.longitude);
+  },
+  function(err) {
+    console.log('error occurred')
+  }
+);
+```
+This method is only available on iOS.
 
 ## Saving photos and videos
 
@@ -314,22 +334,6 @@ var app = angular
 # TypeScript
 
 TypeScript definitions are provided in [PhotoLibrary.d.ts](https://github.com/terikon/cordova-plugin-photo-library/blob/master/PhotoLibrary.d.ts)
-
-# Tests
-
-The library includes tests in [tests](https://github.com/terikon/cordova-plugin-photo-library/tree/master/tests) folder. All tests are in
-[tests.js](https://github.com/terikon/cordova-plugin-photo-library/blob/master/tests/tests.js) file.
-
-# Running tests
-
-## Travis
-
-tcc.db file is located at $HOME/Library/Developer/CoreSimulator/Devices/$DEVICEID/data/Library/TCC/TCC.db
-
-## Helper app
-
-To run tests, use [special photo-library-tester](https://github.com/terikon/photo-library-tester).
-It's always useful to run these tests before submitting changes, for each platform (android, ios, browser).
 
 # TODO
 
